@@ -1,0 +1,27 @@
+@import '../variables';
+
+@import '../mixins/variant';
+
+@each $color, $value in $theme-colors {
+  @include bg-variant('.bg-#{$color}', $value);
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+// Contextual colors
+
+@each $color, $value in $theme-colors {
+  @include color-variant('.text-#{$color}', $value);
+}
+
+@each $color, $value in $colors {
+  .text-#{$color} {
+    color: $value !important;
+  }
+}
+
+.text-reset {
+  color: inherit !important;
+}

@@ -1,0 +1,55 @@
+/// Grid system
+//
+// Создайте столбцы семантической сетки с помощью этих миксинов.
+
+// Возвращает пустую строку, если наибольшая точка останова, в противном случае возвращает имя с дефисом впереди.
+// Полезно для создания отзывчивых утилит.
+//
+//    >> breakpoint-infix(xl, (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    ""  (Возвращает пустую строку)
+//    >> breakpoint-infix(l, (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    "-l"
+@function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
+  @return if(breakpoint-max($name, $breakpoints) == null, '', '-#{$name}');
+}
+
+// Возвращает название меньшей точки остановы, у которой совпадает количество колонок.
+// Если таких не найдено – возвращает текущую.
+//
+//    >> breakpoint-between-down(xl, (xl: 12, l: 12, m: 8, s: 8, xs: 4), (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    "l"  (Возвращает пустую строку)
+//    >> breakpoint-between-down(xs, (xl: 12, l: 12, m: 8, s: 8, xs: 4), (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    "xs"
+@function breakpoint-between-down(
+  $upper,
+  $columns: $grid-columns,
+  $breakpoints: $grid-breakpoints
+) {
+  $lower: $upper;
+
+  $breakpoint-columns: null;
+  @each $name, $number in $columns {
+    @if $number == map-get($columns, $upper) {
+      $breakpoint-columns: if(
+        $breakpoint-columns,
+        append($breakpoint-columns, $name),
+        $name
+      );
+    }
+  }
+
+  $extend-breakpoint: true;
+  @while $extend-breakpoint {
+    $breakpoint-prev: breakpoint-prev($lower, $breakpoints);
+    $extend-breakpoint: if(
+      $breakpoint-prev and index($breakpoint-columns, $breakpoint-prev),
+      true,
+      false
+    );
+    @if $extend-breakpoint {
+      $lower: $breakpoint-prev;
+    }
+  }
+
+  @return $lower;
+}

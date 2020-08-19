@@ -1,0 +1,43 @@
+@mixin bg-img($height, $bottom, $left) {
+  @if ($bottom != '') {
+    .common-img {
+      bottom: $bottom + rem;
+    }
+  } @else {
+    align-self: center;
+    align-items: center;
+  }
+  @if ($left != '') {
+    @if ($bottom != '') {
+      .common-img {
+        left: $left * 3rem;
+      }
+    } @else {
+      .common-img {
+        position: relative;
+        img {
+          position: absolute;
+          left: $left * 3rem;
+        }
+      }
+    }
+  }
+  .common-img {
+    height: $height + rem;
+    img {
+      height: 100%;
+      width: auto;
+    }
+  }
+}
+
+@mixin img-center() {
+  .common-img {
+    img {
+      position: absolute;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+    }
+  }
+}

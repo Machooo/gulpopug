@@ -1,0 +1,75 @@
+@import '../variables';
+
+@import '../varpoint/breakpoints';
+
+@import '../mixins/breakpoints';
+@import '../mixins/grid-framework';
+@import '../mixins/grid';
+
+html {
+  box-sizing: border-box;
+  -ms-overflow-style: scrollbar;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+// Container widths
+
+// Одиночный класс контейнеров с максимальной шириной точки останова.
+.container {
+  @include make-container();
+  @include make-gutter-padding();
+  @include make-container-max-widths();
+}
+
+// Адаптивные контейнеры, которые имеют ширину 100% до точки останова.
+$extend-breakpoint: ();
+@each $name, $width in $grid-breakpoints {
+  @if map-has-key($container-max-widths, $name) {
+    $extend-breakpoint: map-merge(
+      $extend-breakpoint,
+      (
+        $name: $width
+      )
+    );
+
+    .container-fluid-#{$name} {
+      @include make-container();
+      @include make-gutter-padding();
+      @include make-container-max-widths(
+        $container-max-widths,
+        $extend-breakpoint
+      );
+    }
+  }
+}
+
+// Row
+//
+// Строки содержат ваши столбцы.
+.row {
+  @include make-row();
+  @include make-gutter-margin();
+}
+
+// Удалите отрицательное поле из значения по умолчанию .row, затем горизонтальный отступ
+// из всех ближайших дочерних столбцов (чтобы предотвратить наследуемое наследование стиля).
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > .col,
+  > [class*='col-'] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+// Columns
+//
+// Общие стили для малых и больших столбцов сетки
+@include make-grid-columns();

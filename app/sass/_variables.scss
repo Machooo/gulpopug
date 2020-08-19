@@ -1,0 +1,167 @@
+@import 'varpoint/variables';
+
+// Variables
+//
+// Переменные должны следовать формуле `$component-state-property-size` для согласованного именования
+// Пример: $nav-link-disabled-color и $modal-content-box-shadow-xs.
+
+// Color system
+
+$colors: (
+  'black': $black,
+  'gray-550': $gray-550,
+  'gray-700': $gray-700,
+  'gray-880': $gray-880,
+  'gray-930': $gray-930,
+  'gray-960': $gray-960,
+  'red': $red,
+  'white': $white
+) !default;
+
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary
+) !default;
+
+// Установите процент затемнения ссылки/кнопки при наведении.
+$color-hover-darken-percentage: 3%;
+
+// Functions
+//
+// Символы, которые экранированы функцией escape-svg.
+
+$escaped-characters: (
+  ('<', '%3c'),
+  ('>', '%3e'),
+  ('#', '%23'),
+  ('(', '%28'),
+  (')', '%29')
+) !default;
+
+// Spacing
+//
+// Управляйте стилем по умолчанию для большинства элементов, изменяя эти переменные.
+// В основном сосредоточены на расстоянии.
+
+// prettier-ignore
+$spacers-horizontally: (
+  (xl: 0, l: 0, m: 0, s: 0, xs: 0),
+  (xl: 1, l: 1, m: 1, s: 1, xs: 1),
+  (xl: 2, l: 2, m: 2, s: 1, xs: 1),
+  (xl: 3, l: 3, m: 3, s: 2, xs: 2),
+  (xl: 4, l: 3, m: 3, s: 2, xs: 2),
+  (xl: 5, l: 4, m: 4, s: 3, xs: 3),
+  (xl: 6, l: 5, m: 5, s: 4, xs: 4)
+) !default;
+// prettier-ignore
+$spacers-vertical: (
+  (xl: 7, l: 6, m: 6, s: 4, xs: 4),
+  (xl: 8, l: 7, m: 7, s: 5, xs: 5),
+  (xl: 9, l: 8, m: 8, s: 6, xs: 6),
+  (xl: 10, l: 8, m: 8, s: 6, xs: 6),
+  (xl: 11, l: 9, m: 9, s: 7, xs: 7),
+  (xl: 12, l: 9, m: 9, s: 7, xs: 7),
+  (xl: 13, l: 10, m: 10, s: 8, xs: 8),
+  (xl: 14, l: 11, m: 11, s: 9, xs: 9),
+  (xl: 15, l: 13, m: 13, s: 9, xs: 9)
+) !default;
+
+// Grid breakpoints
+//
+// Минимальные размеры, при которых ваш макет будет меняться,
+// адаптируясь к разным размерам экрана, для использования в медиа-запросах.
+
+$grid-breakpoints: (
+  xl: 1200px,
+  l: 992px,
+  m: 768px,
+  s: 576px,
+  xs: 0
+) !default;
+$grid-breakpoints-screen-resolution-l: (
+  height: 768px,
+  width: 1366px
+) !default;
+
+// Grid containers
+//
+// Определите максимальную ширину `.container` для разных размеров экрана.
+
+$container-max-widths: (
+  xl: 1140px,
+  l: 960px,
+  m: 720px,
+  s: 540px
+) !default;
+
+// Grid columns
+//
+// Установите количество столбцов и укажите ширину gutters.
+
+$grid-columns: (
+  xl: 12,
+  l: 12,
+  m: 8,
+  s: 8,
+  xs: 4
+) !default;
+$grid-gutters-width: (
+  xl: 24px,
+  l: 24px,
+  m: 24px,
+  s: 16px,
+  xs: 16px
+) !default;
+$grid-row-columns: 4 !default;
+
+// Font size
+//
+// font-size, line-height, размеры заголовков и другое.
+
+// Определите размерность шрифтов.
+$font-sizes: (
+  150: 12px,
+  175: 14px,
+  200: 16px,
+  225: 18px,
+  250: 20px,
+  300: 24px,
+  350: 28px,
+  400: 32px,
+  500: 40px,
+  600: 48px,
+  700: 56px,
+  800: 64px
+) !default;
+$font-size-base: 200;
+$font-size-big: 250;
+$font-size-small: 150;
+$font-size-headings: (
+  h1: 800,
+  h2: 700,
+  h3: 500,
+  h4: 400,
+  h5: 300,
+  h6: 250
+) !default;
+
+// font-size для разных размеров экрана.
+// prettier-ignore
+$font-size-breakpoints: (
+  150: (xl: 150, l: 150, m: 150, s: 150, xs: 150),
+  //175: (xl: 175, l: 175, m: 175, s: 150, xs: 150),
+  200: (xl: 200, l: 175, m: 175, s: 175, xs: 175),
+  //225: (xl: 225, l: 200, m: 200, s: 175, xs: 175),
+  250: (xl: 250, l: 225, m: 225, s: 200, xs: 200),
+  300: (xl: 300, l: 250, m: 250, s: 225, xs: 225),
+  //350: (xl: 350, l: 300, m: 300, s: 250, xs: 250),
+  400: (xl: 400, l: 300, m: 300, s: 250, xs: 250),
+  500: (xl: 500, l: 350, m: 350, s: 300, xs: 300),
+  //600: (xl: 600, l: 400, m: 400, s: 300, xs: 300),
+  700: (xl: 700, l: 500, m: 500, s: 350, xs: 350),
+  800: (xl: 800, l: 600, m: 600, s: 400, xs: 400)
+) !default;
+
+// Utilities
+
+$displays: block, flex, inline, inline-block, inline-flex, none !default;

@@ -1,0 +1,29 @@
+include footer
+block config
+  include config
+  
+html
+  head
+    title #{siteTitle} - Банк для предпринимателей и предприятий
+    meta(property="og:type" content="website")
+    meta(property="og:site_name" content="Банк Точка")
+    meta(property="og:locale" content="ru_RU")
+    meta(property="og:title" content=ogTitle ? ogTitle : 'Банк точка')
+    meta(property="og:description" content=ogDesc ? ogDesc : 'Банк точка')
+    meta(property="og:url" content=ogUrl ? ogUrl : 'https://tochka.com/rko-landings')
+    meta(property="og:image" content=ogImg ? ogImg : '../images/og/og_image.png')
+    meta(name="twitter:card" content="summary_large_image")
+    meta(name="twitter:image:src" content=ogImg ? ogImg : '../images/og/og_image.png')
+    meta(name="twitter:url" content=ogUrl ? ogUrl : 'https://tochka.com/rko-landings')
+    meta(charset="utf-8")
+    link(rel="stylesheet" href="css/libs.min.css")
+    link(rel="stylesheet" href="css/main.css")
+    block customStyles
+  body
+    block content
+
+    +footer
+    
+    script(src="js/libs.min.js")
+    script(src="js/main.js")
+    block extraScripts

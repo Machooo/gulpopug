@@ -1,0 +1,32 @@
+@import '../variables';
+
+@import '../varpoint/breakpoints';
+@import '../varpoint/font';
+
+// font-size
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-down($breakpoint) {
+    @each $size in map-keys($font-size-breakpoints) {
+      .font-size-#{$size} {
+        font-size: font-height($size, $breakpoint) !important;
+        line-height: font-line-height($size, $breakpoint) !important;
+      }
+    }
+
+    // Размеры заголовков.
+    @each $heading in map-keys($font-size-headings) {
+      #{$heading},
+      .#{$heading} {
+        font-size: font-height(
+          map_get($font-size-headings, $heading),
+          $breakpoint
+        ) !important;
+        line-height: font-line-height(
+          map_get($font-size-headings, $heading),
+          $breakpoint
+        ) !important;
+      }
+    }
+  }
+}

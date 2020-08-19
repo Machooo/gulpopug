@@ -1,0 +1,12 @@
+@import '../varpoint/variables';
+
+@import '../mixins/variant';
+
+@include shadow-variant('.shadow-100', $box-shadow-100);
+@include shadow-variant('.shadow-200', $box-shadow-200);
+@include shadow-variant('.shadow-300', $box-shadow-300);
+@include shadow-variant('.shadow-400', $box-shadow-400);
+
+.shadow-none {
+  box-shadow: none !important;
+}

@@ -1,0 +1,27 @@
+doctype html
+<html>
+  head
+    title Подари стихи 
+    meta(charset="utf-8")
+    meta(id="viewport" name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="css/libs.min.css")
+    link(rel="stylesheet" href="css/main.css")
+  <body>
+  <div class="site-wrapper">
+    header.header
+      .container
+        a.header__logo(href="/")
+          img(src="images/logo.png")
+        .header__logo-text.d-mob-none Агентство стихов<br> и&nbsp;поздравлений
+        .header__contacts.d-mob-none
+          .header__social
+            a(class="header__social-link header__social-link--wp" href="#")
+              img(src="images/wp.svg")
+            a(class="header__social-link header__social-link--viber" href="#")
+              img(src="images/viber.svg")
+            a(class="header__social-link header__social-link--tg" href="#")
+              img(src="images/tg.svg")
+          .header__phone.d-mob-none
+            span Бесплатно по всей России
+            a(href='tel:8(800)302-43-10') 8 (800) 302-43-10
+          .header__callback.show-popup(data-popup="callback") заказать звонок

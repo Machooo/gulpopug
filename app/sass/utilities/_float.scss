@@ -1,0 +1,28 @@
+@import '../varpoint/breakpoints';
+@import '../varpoint/clearfix';
+
+@import '../mixins/breakpoints';
+
+// Float
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-down($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .float#{$infix}-left {
+      float: left !important;
+    }
+    .float#{$infix}-right {
+      float: right !important;
+    }
+    .float#{$infix}-none {
+      float: none !important;
+    }
+  }
+}
+
+// clear: both;
+
+.clearfix {
+  @include clearfix();
+}

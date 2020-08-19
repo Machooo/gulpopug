@@ -1,0 +1,46 @@
+// Contextual backgrounds
+
+@mixin bg-variant($parent, $color) {
+  #{$parent} {
+    background-color: $color !important;
+  }
+  a#{$parent},
+  button#{$parent} {
+    &:hover,
+    &:focus {
+      background-color: darken(
+        $color,
+        $color-hover-darken-percentage
+      ) !important;
+    }
+  }
+}
+
+// Typography
+
+@mixin color-variant($parent, $color) {
+  #{$parent} {
+    color: $color !important;
+  }
+  a#{$parent} {
+    &:hover,
+    &:focus {
+      color: darken($color, $color-hover-darken-percentage) !important;
+    }
+  }
+}
+
+@mixin shadow-variant($parent, $shadow) {
+  #{$parent} {
+    box-shadow: $shadow !important;
+  }
+  a#{$parent} {
+    &:hover,
+    &:focus {
+      box-shadow: $box-shadow-hover !important;
+    }
+    &:active {
+      box-shadow: $box-shadow-active !important;
+    }
+  }
+}

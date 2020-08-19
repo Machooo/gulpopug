@@ -1,0 +1,59 @@
+@import '../variables';
+
+/// Typography font
+//
+// Задавайте размер и начертания шрифтов с помощью этих миксинов.
+
+// Возвращает значение font-size в px. 0 если размер не найден.
+//
+//    >> font-height(200, xl)
+//    "16px"
+@function font-height($size, $breakpoint: xl) {
+  @if $breakpoint != xl {
+    @if not map-has-key($font-size-breakpoints, $size) {
+      @return 0;
+    }
+
+    $breakpoints: map-get($font-size-breakpoints, $size);
+    @if not map-has-key($breakpoints, $breakpoint) {
+      @return 0;
+    }
+
+    $size: map_get($breakpoints, $breakpoint);
+  }
+
+  @return if(map-has-key($font-sizes, $size), map_get($font-sizes, $size), 0);
+}
+
+// Возвращает значение line-height в px. 0px если размер не найден.
+//
+//    >> font-line-height(200, xl)
+//    "24px"
+@function font-line-height($size, $breakpoint: xl) {
+  $font-height: font-height($size, $breakpoint);
+  @if $font-height == 0 {
+    @return 0;
+  }
+
+  @if $font-height % 4 == 0 {
+    @if $size <= $font-size-small {
+      @return $font-height + 4px;
+    }
+    @return $font-height + 8px;
+  } @else if $font-height % 2 == 0 {
+    @if $size <= $font-size-small {
+      @return $font-height + 2px;
+    }
+    @return $font-height + 6px;
+  } @else {
+    @if $size <= $font-size-small {
+      @return $font-height + 3px;
+    }
+    @return $font-height + 7px;
+  }
+}
+
+@mixin make-font-size($size, $breakpoint: xl) {
+  font-size: font-height($size, $breakpoint);
+  line-height: font-line-height($size, $breakpoint);
+}

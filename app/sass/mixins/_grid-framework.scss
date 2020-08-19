@@ -1,0 +1,104 @@
+/// Framework grid generation
+//
+// Используется для генерации правильного количества классов сетки при любом значении `$grid-columns`.
+
+@mixin make-grid-columns(
+  $grid-columns: $grid-columns,
+  $breakpoints: $grid-breakpoints
+) {
+  .col,
+  .col-auto {
+    @include make-col-ready();
+    @include make-gutter-padding();
+  }
+
+  // Предоставить базовые классы `.col-{bp}` для столбцов flexbox равной ширины.
+  .col {
+    flex-basis: 0;
+    flex-grow: 1;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .col-auto {
+    @include make-col-auto();
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $columns: map-get($grid-columns, $breakpoint);
+
+    @if $columns > 0 {
+      $lower: breakpoint-between-down($breakpoint, $grid-columns, $breakpoints);
+      $upper: $breakpoint;
+
+      // ...
+      $gutters-breakpoints: null;
+      // prettier-ignore
+      @for $i from index(map-keys($breakpoints), $upper) through index(map-keys($breakpoints), $lower) {
+        $k: nth(map-keys($breakpoints), $i);
+        $gutters-breakpoints: if(
+          $gutters-breakpoints,
+          append($gutters-breakpoints, $k),
+          $k
+        );
+      }
+
+      // Разрешить столбцам растягиваться на всю ширину ниже их точек останова.
+      @for $i from 1 through $columns {
+        .col-#{$breakpoint}-#{$i} {
+          @include make-col-ready();
+          @include make-gutter-padding($breakpoint-names: $gutters-breakpoints);
+        }
+      }
+    }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $columns: map-get($grid-columns, $breakpoint);
+
+    // breakpoint от-до - охватывает точки остановы с одинаковым количеством колонок.
+    $lower: breakpoint-between-down($breakpoint, $grid-columns, $breakpoints);
+    $upper: $breakpoint;
+    @include media-breakpoint-between($lower, $upper, $breakpoints) {
+      @if $grid-row-columns > 0 {
+        @for $i from 1 through $grid-row-columns {
+          .row-cols-#{$breakpoint}-#{$i} {
+            @include row-cols($i);
+          }
+        }
+      }
+
+      @if $columns > 0 {
+        $i: $columns;
+        @while $i > 0 {
+          .col-#{$breakpoint}-#{$i} {
+            @include make-col($i, $columns);
+
+            // Столбцы вложенные в столбцы: число колонок в потомке должно быть равно родителю.
+            @for $j from 1 through $i {
+              .col-#{$breakpoint}-#{$j} {
+                @include make-col($j, $i);
+              }
+            }
+          }
+
+          $i: $i - 1;
+        }
+      }
+
+      .order-#{$breakpoint}-first {
+        order: -1;
+      }
+
+      .order-#{$breakpoint}-last {
+        order: $columns + 1;
+      }
+
+      @for $i from 1 through $columns {
+        .order-#{$breakpoint}-#{$i} {
+          order: $i;
+        }
+      }
+    }
+  }
+}

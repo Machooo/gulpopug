@@ -1,0 +1,28 @@
+@import '../variables';
+
+@import '../varpoint/variables';
+@import '../varpoint/breakpoints';
+
+@import '../mixins/breakpoints';
+
+//
+// Text
+//
+
+// Responsive alignment
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-down($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .text-left#{$infix} {
+      text-align: left !important;
+    }
+    .text-right#{$infix} {
+      text-align: right !important;
+    }
+    .text-center#{$infix} {
+      text-align: center !important;
+    }
+  }
+}

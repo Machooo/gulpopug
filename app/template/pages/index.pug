@@ -1,0 +1,33 @@
+extends ../layout/layout.pug
+
+include ../components/image.pug
+
+block config
+  - var siteTitle = "Лендинг бла бла бла"
+  - const ogImg = "https://tochka.com/rko-landings";
+
+block customStyles
+  link(rel="stylesheet", href="css/pages/homepage.css")
+
+block content
+  -
+    const jsonExample = [
+      {
+        title: 'test'
+      },
+      {
+        title: 'test'
+      },
+      {
+        title: 'test'
+      },
+      {
+        title: 'test'
+      },
+    ];
+
+  .container
+    .example-foreach.row
+      each item, index in jsonExample
+        .example-foreach__item.col-xl-3(data-index=index)
+          .example-foreach_title= item.title

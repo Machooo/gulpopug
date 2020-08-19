@@ -1,0 +1,307 @@
+@import '../variables';
+
+// Grid breakpoints
+//
+// Размеры экранов точек останова и запросы мультимедиа.
+//
+// Точки останова определяются как карта (name: minimum width), порядок от большого до малого:
+//
+//    (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0)
+//
+// Точки останов `l` работает в диапазоне от 992px до 1199.98px, для экранов с шириной менее 768px - до 1366px.
+
+// Имя следующей точки останова или null для последней точки останова.
+//
+//    >> breakpoint-next(s)
+//    m
+//    >> breakpoint-next(s, (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    m
+//    >> breakpoint-next(s, $breakpoint-names: (xl l m s xs))
+//    m
+@function breakpoint-next(
+  $name,
+  $breakpoints: $grid-breakpoints,
+  $breakpoint-names: map-keys($breakpoints)
+) {
+  $n: index($breakpoint-names, $name);
+  @return if($n != null and $n > 1, nth($breakpoint-names, $n - 1), null);
+}
+
+// Имя предыдущей точки останова или null для последней точки останова.
+//
+//    >> breakpoint-next(m)
+//    s
+//    >> breakpoint-next(m, (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    s
+//    >> breakpoint-next(m, $breakpoint-names: (xl l m s xs))
+//    s
+@function breakpoint-prev(
+  $name,
+  $breakpoints: $grid-breakpoints,
+  $breakpoint-names: map-keys($breakpoints)
+) {
+  $n: index($breakpoint-names, $name);
+  @return if(
+    $n != null and $n < length($breakpoint-names),
+    nth($breakpoint-names, $n + 1),
+    null
+  );
+}
+
+// Минимальная ширина точки останова. null для наименьшей (первой) точки останова.
+//
+//    >> breakpoint-min(s, (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    576px
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+// Максимальная ширина точки останова. null для самой большой (последней) точки останова.
+// Максимальное значение вычисляется как минимум следующего за минус 0.02px,
+// чтобы обойти ограничения префиксов `min-` и `max-`, и экранов с дробной шириной.
+//
+//    >> breakpoint-max(s, (xl: 1200px, l: 992px, m: 768px, s: 576px, xs: 0))
+//    767.98px
+@function breakpoint-max($name, $breakpoints: $grid-breakpoints) {
+  $next: breakpoint-next($name, $breakpoints);
+  @return if($next, breakpoint-min($next, $breakpoints) - 0.02, null);
+}
+
+// Ширина или высота экрана ноутбука в зависимости от переданного свойства.
+// Для префиксов `min-` в медиа-запросах.
+//
+//    >> laptop-min(width, (height: 768px, width: 1366px))
+//    1366.02px
+@function laptop-min(
+  $property,
+  $screen-resolution: $grid-breakpoints-screen-resolution-l
+) {
+  @return map-get($screen-resolution, $property) + 0.02;
+}
+
+// Ширина или высота экрана ноутбука в зависимости от переданного свойства.
+// Для префиксов `max-` в медиа-запросах.
+//
+//    >> laptop-max(width, (height: 768px, width: 1366px))
+//    1366px
+@function laptop-max(
+  $property,
+  $screen-resolution: $grid-breakpoints-screen-resolution-l
+) {
+  @return map-get($screen-resolution, $property);
+}
+
+// Минимальная ширина точки останова. Нет запроса для наименьшей точки останова.
+// Делает @content применимым к данной точке останова и шире.
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+
+  @if $name == xs {
+    @content;
+  }
+  @if $name == s {
+    @media (min-width: $min) {
+      @content;
+    }
+  }
+  @if $name == m {
+    @media (min-width: $min) {
+      @content;
+    }
+  }
+  @if $name == l {
+    @media (min-width: $min) {
+      @content;
+    }
+  }
+  @if $name == xl {
+    @media (min-width: $min) {
+      @media (min-width: laptop-min(width)), (min-height: laptop-min(height)) {
+        @content;
+      }
+    }
+  }
+}
+
+// Максимальная ширина точки останова. Нет запроса на самую большую точку останова.
+// Делает @content применимым к заданной точке останова и уже.
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+  $max: breakpoint-max($name, $breakpoints);
+
+  @if $name == xl {
+    @content;
+  }
+  @if $name == l {
+    @media (max-width: $max),
+      (max-width: laptop-max(width)) and (max-height: laptop-max(height)) {
+      @content;
+    }
+  }
+  @if $name == m {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+  @if $name == s {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+  @if $name == xs {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}
+
+// Media, который охватывает несколько точек останова.
+// Заставляет @content применяться между минимальной и максимальной точками останова
+@mixin media-breakpoint-between(
+  $lower,
+  $upper,
+  $breakpoints: $grid-breakpoints
+) {
+  $min: breakpoint-min($lower, $breakpoints);
+  $max: breakpoint-max($upper, $breakpoints);
+
+  @if $lower == xs {
+    @if $upper == xs {
+      @media (max-width: $max) {
+        @content;
+      }
+    }
+    @if $upper == s {
+      @media (max-width: $max) {
+        @content;
+      }
+    }
+    @if $upper == m {
+      @media (max-width: $max) {
+        @content;
+      }
+    }
+    @if $upper == l {
+      @media (max-width: $max),
+        (max-width: laptop-max(width)) and (max-height: laptop-max(height)) {
+        @content;
+      }
+    }
+    @if $upper == xl {
+      @content;
+    }
+  }
+
+  @if $lower == s {
+    @if $upper == s {
+      @media (min-width: $min) and (max-width: $max) {
+        @content;
+      }
+    }
+    @if $upper == m {
+      @media (min-width: $min) and (max-width: $max) {
+        @content;
+      }
+    }
+    @if $upper == l {
+      @media (min-width: $min) {
+        @media (max-width: $max),
+          (max-width: laptop-max(width)) and (max-height: laptop-max(height)) {
+          @content;
+        }
+      }
+    }
+    @if $upper == xl {
+      @media (min-width: $min) {
+        @content;
+      }
+    }
+  }
+
+  @if $lower == m {
+    @if $upper == m {
+      @media (min-width: $min) and (max-width: $max) {
+        @content;
+      }
+    }
+    @if $upper == l {
+      @media (min-width: $min) {
+        @media (max-width: $max),
+          (max-width: laptop-max(width)) and (max-height: laptop-max(height)) {
+          @content;
+        }
+      }
+    }
+    @if $upper == xl {
+      @media (min-width: $min) {
+        @content;
+      }
+    }
+  }
+
+  @if $lower == l {
+    @if $upper == l {
+      @media (min-width: $min) {
+        @media (max-width: $max),
+          (max-width: laptop-max(width)) and (max-height: laptop-max(height)) {
+          @content;
+        }
+      }
+    }
+    @if $upper == xl {
+      @media (min-width: $min) {
+        @content;
+      }
+    }
+  }
+
+  @if $lower == xl {
+    @if $upper == xl {
+      @media (min-width: $min) {
+        @media (min-width: laptop-min(width)),
+          (min-height: laptop-min(height)) {
+          @content;
+        }
+      }
+    }
+  }
+}
+
+// Между минимальной и максимальной шириной точки останова.
+// Нет минимума для самой маленькой точки останова и нет максимума для самой большой.
+// Делает @content применимым только к данной точке останова, а не к более широким или более узким экранам.
+@mixin media-breakpoint-only($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  $max: breakpoint-max($name, $breakpoints);
+
+  @if $name == xl {
+    @media (min-width: $min) {
+      @media (min-width: laptop-min(width)), (min-height: laptop-min(height)) {
+        @content;
+      }
+    }
+  }
+  @if $name == l {
+    @media (min-width: $min) {
+      @media (max-width: $max),
+        (max-width: laptop-max(width)) and (max-height: laptop-max(height)) {
+        @content;
+      }
+    }
+  }
+  @if $name == m {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  }
+  @if $name == s {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  }
+  @if $name == xs {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}

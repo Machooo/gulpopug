@@ -1,0 +1,86 @@
+// Variables
+//
+// Локальные переменные для подключения в ваших макетах и интерфейсах.
+
+// Color system
+
+$black: #333333 !default;
+
+//$gray: #808080;
+$gray-550: #747474 !default;
+$gray-700: #b2b2b2 !default;
+$gray-880: #e1e1e1 !default;
+$gray-930: #eeeeee !default;
+$gray-960: #f6f6f6 !default;
+
+//$green: #00FF00;
+$green: #2dd225 !default;
+
+//$purple: #8B00FF;
+$primary: #7658e0 !default;
+$primary-hover: #6b4bde !default;
+$secondary: #e9e7f8 !default;
+$secondary-hover: #dedbf5 !default;
+
+//$red: #FF0000;
+$red: #d22d25 !default;
+
+$white: #ffffff !default;
+
+// Spacing
+//
+// Базовый размер между элементами.
+
+$spacer: 8px !default;
+
+// Boxing
+//
+// Определите общие размеры отступов и радиуса границ, и многое другое.
+
+$border-width: 1px !default;
+$border-color: $gray-880 !default;
+
+$border-radius-100: 3px !default;
+$border-radius-200: 6px !default;
+//$border-radius-300: 9px !default;
+$border-radius-400: 15px !default;
+
+$box-shadow-100: 0px 5px 15px rgba(0, 0, 0, 0.05) !default;
+$box-shadow-200: 0px 15px 25px rgba(0, 0, 0, 0.05) !default;
+$box-shadow-300: 0px 20px 40px rgba(0, 0, 0, 0.1) !default;
+$box-shadow-400: 0px 20px 60px rgba(0, 0, 0, 0.1) !default;
+
+$box-shadow-active: 0px 3px 6px rgba(0, 0, 0, 0.14) !default;
+$box-shadow-hover: 0px 5px 15px rgba(0, 0, 0, 0.12) !default;
+
+// Typography
+//
+// Font, line-height, заголовки и другое.
+
+// prettier-ignore
+$font-family-anglecia: AngleciaProTitle-Bold, Spectral, Source Serif Pro, New York Large, Times New Roman, Nimbus Roman Becker No9TCon, sans-serif !default;
+$font-weight-anglecia: (
+  bold: 700
+) !default;
+
+// prettier-ignore
+$font-family-tochkasans: TochkaSans, Avenir, Source Sans Pro, Helvetica, Segoe UI, Nimbus Sans No5 T CY, sans-serif !default;
+$font-weight-tochkasans: (
+  regular: 400,
+  medium: 500,
+  demi: 700,
+  bold: 800
+) !default;
+
+// Z-index master list
+//
+// Предупреждение. Избегайте настройки этих значений.
+// Они используются для наблюдения z-index компонентов и предназначены для совместной работы.
+
+$zindex-dropdown: 1000 !default;
+$zindex-sticky: 1020 !default;
+$zindex-fixed: 1030 !default;
+$zindex-modal-backdrop: 1040 !default;
+$zindex-modal: 1050 !default;
+$zindex-popover: 1060 !default;
+$zindex-tooltip: 1070 !default;

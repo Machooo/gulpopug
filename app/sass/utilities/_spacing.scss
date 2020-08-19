@@ -1,0 +1,103 @@
+@import '../variables';
+
+@import '../varpoint/variables';
+@import '../varpoint/breakpoints';
+
+@import '../mixins/breakpoints';
+
+// Margin and Padding
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-down($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    $prev-size: null;
+
+    @each $prop, $abbrev in (margin: m, padding: p) {
+      @each $spacers in $spacers-horizontally {
+        $size: map-get($spacers, $breakpoint);
+        @if $size != $prev-size {
+          .#{$abbrev}#{$infix}-#{$size} {
+            #{$prop}: $size * $spacer !important;
+          }
+          .#{$abbrev}r#{$infix}-#{$size},
+          .#{$abbrev}x#{$infix}-#{$size} {
+            #{$prop}-right: $size * $spacer !important;
+          }
+          .#{$abbrev}l#{$infix}-#{$size},
+          .#{$abbrev}x#{$infix}-#{$size} {
+            #{$prop}-left: $size * $spacer !important;
+          }
+        }
+        $prev-size: $size;
+      }
+      $prev-size: null;
+    }
+
+    @each $prop, $abbrev in (margin: m, padding: p) {
+      @each $spacers in join($spacers-horizontally, $spacers-vertical) {
+        $size: map-get($spacers, $breakpoint);
+        @if $size != $prev-size {
+          .#{$abbrev}t#{$infix}-#{$size},
+          .#{$abbrev}y#{$infix}-#{$size} {
+            #{$prop}-top: $size * $spacer !important;
+          }
+          .#{$abbrev}b#{$infix}-#{$size},
+          .#{$abbrev}y#{$infix}-#{$size} {
+            #{$prop}-bottom: $size * $spacer !important;
+          }
+        }
+        $prev-size: $size;
+      }
+      $prev-size: null;
+    }
+
+    // Negative margins (например, для `.mb-1` отрицательный аналог `.mb-n1`)
+    @each $spacers in $spacers-horizontally {
+      $size: map-get($spacers, $breakpoint);
+      @if $size != 0 and $size != $prev-size {
+        .m#{$infix}-n#{$size} {
+          margin: -$size * $spacer !important;
+        }
+        .mt#{$infix}-n#{$size},
+        .my#{$infix}-n#{$size} {
+          margin-top: -$size * $spacer !important;
+        }
+        .mr#{$infix}-n#{$size},
+        .mx#{$infix}-n#{$size} {
+          margin-right: -$size * $spacer !important;
+        }
+        .mb#{$infix}-n#{$size},
+        .my#{$infix}-n#{$size} {
+          margin-bottom: -$size * $spacer !important;
+        }
+        .ml#{$infix}-n#{$size},
+        .mx#{$infix}-n#{$size} {
+          margin-left: -$size * $spacer !important;
+        }
+      }
+      $prev-size: $size;
+    }
+    $prev-size: null;
+
+    // Некоторые специальные классы
+    .m#{$infix}-auto {
+      margin: auto !important;
+    }
+    .mt#{$infix}-auto,
+    .my#{$infix}-auto {
+      margin-top: auto !important;
+    }
+    .mr#{$infix}-auto,
+    .mx#{$infix}-auto {
+      margin-right: auto !important;
+    }
+    .mb#{$infix}-auto,
+    .my#{$infix}-auto {
+      margin-bottom: auto !important;
+    }
+    .ml#{$infix}-auto,
+    .mx#{$infix}-auto {
+      margin-left: auto !important;
+    }
+  }
+}

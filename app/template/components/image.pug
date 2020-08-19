@@ -1,0 +1,5 @@
+mixin pic(fileName, mimeType = "png")
+    picture
+        source(srcset="images/" + fileName + ".webp" type="image/webp")
+        source(srcset="images/" + fileName + "." + mimeType type="image/jpeg")
+        img(src="images/" + fileName + "." + mimeType)
